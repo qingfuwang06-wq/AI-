@@ -3,11 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const formMessage = document.querySelector("#formMessage");
 
   const LEAD_STORAGE_KEY = "aiLeadCustomers";
-  const CONTACT_CONFIG = {
-    mode: "local", // 可选：local、email、wechatWebhook
-    email: "",
-    wechatWebhookUrl: "",
+  const FORM_SERVICE_CONFIG = {
+    // TODO：上线前请把下面地址替换为你的 Formspree 表单地址，例如：https://formspree.io/f/xxxxabcd
+    // 获取方式：登录 https://formspree.io/ 创建表单，把接收线索的邮箱绑定到该表单。
+    endpoint: "https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID",
   };
+
+  const isFormServiceConfigured = () =>
+    FORM_SERVICE_CONFIG.endpoint &&
+    !FORM_SERVICE_CONFIG.endpoint.includes("REPLACE_WITH_YOUR_FORM_ID");
 
   const getStoredLeads = () => {
     try {
@@ -23,61 +27,36 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(leads));
   };
 
-  const sendLeadByEmail = (lead) => {
-    if (!CONTACT_CONFIG.email) {
+  const sendLeadToFormService = async (lead) => {
+    if (!isFormServiceConfigured()) {
       return;
     }
 
-    const subject = encodeURIComponent(`新的AI获客咨询：${lead.name}`);
-    const body = encodeURIComponent(
-      [
-        `姓名：${lead.name}`,
-        `电话：${lead.phone}`,
-        `行业：${lead.industry}`,
-        `需求：${lead.need}`,
-        `提交时间：${lead.submittedAt}`,
-      ].join("\n")
-    );
-
-    window.location.href = `mailto:${CONTACT_CONFIG.email}?subject=${subject}&body=${body}`;
-  };
-
-  const sendLeadToWechat = async (lead) => {
-    if (!CONTACT_CONFIG.wechatWebhookUrl) {
-      return;
-    }
-
-    await fetch(CONTACT_CONFIG.wechatWebhookUrl, {
+    const response = await fetch(FORM_SERVICE_CONFIG.endpoint, {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        msgtype: "text",
-        text: {
-          content: [
-            "新的AI获客咨询",
-            `姓名：${lead.name}`,
-            `电话：${lead.phone}`,
-            `行业：${lead.industry}`,
-            `需求：${lead.need}`,
-            `提交时间：${lead.submittedAt}`,
-          ].join("\n"),
-        },
+        subject: "新的AI获客咨询",
+        name: lead.name,
+        phone: lead.phone,
+        industry: lead.industry,
+        need: lead.need,
+        submittedAt: lead.submittedAt,
       }),
     });
+
+    if (!response.ok) {
+      throw new Error("Lead delivery failed");
+    }
   };
 
-  const handleLeadDelivery = async (lead) => {
-    saveLeadLocally(lead);
-
-    if (CONTACT_CONFIG.mode === "email") {
-      sendLeadByEmail(lead);
-    }
-
-    if (CONTACT_CONFIG.mode === "wechatWebhook") {
-      await sendLeadToWechat(lead);
-    }
+  const showSuccess = () => {
+    formMessage.textContent = "提交成功，顾问将尽快联系您。";
+    formMessage.hidden = false;
+    leadForm.reset();
   };
 
   leadForm.addEventListener("submit", async (event) => {
@@ -93,14 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      await handleLeadDelivery(lead);
-      formMessage.textContent = "提交成功，顾问将尽快联系您。";
-      formMessage.hidden = false;
-      leadForm.reset();
+      await sendLeadToFormService(lead);
+      saveLeadLocally(lead);
+      showSuccess();
     } catch (error) {
-      formMessage.textContent = "提交成功，顾问将尽快联系您。";
-      formMessage.hidden = false;
-      leadForm.reset();
+      saveLeadLocally(lead);
+      showSuccess();
     }
   });
 });

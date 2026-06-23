@@ -147,7 +147,9 @@
         <h2>留下您的需求，获取专属获客方案</h2>
         <p>提交后我们将根据您的行业与业务目标，安排顾问尽快联系您。</p>
       </div>
-      <form class="lead-form" id="leadForm">
+      <form class="lead-form" id="leadForm" method="POST" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID">
+        <!-- TODO：上线前请把 action 替换为你的 Formspree 表单地址，例如：https://formspree.io/f/xxxxabcd -->
+        <input type="hidden" name="subject" value="新的AI获客咨询">
         <label>姓名<input type="text" name="name" placeholder="请输入姓名" required></label>
         <label>电话<input type="tel" name="phone" placeholder="请输入联系电话" required></label>
         <label>行业<input type="text" name="industry" placeholder="例如：餐饮、教育、招商" required></label>
