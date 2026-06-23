@@ -12,12 +12,29 @@
 
 也可以在本地启动任意静态文件服务器后访问该页面。
 
-## 客户信息保存方式
+## 客户信息收集方式
 
-表单默认使用最简单的本地记录方案：客户提交姓名、电话、行业和需求后，信息会保存到浏览器 `localStorage` 的 `aiLeadCustomers` 字段，并在页面提示“提交成功，顾问将尽快联系您。”。
+表单已升级为适合新手的静态表单服务方案：默认预留 Formspree 接口位。上线前只需要把 `index.html` 表单里的 `action` 和 `script.js` 里的 `FORM_SERVICE_CONFIG.endpoint` 替换为你的 Formspree 表单地址即可。
 
-如需切换保存方式，可在 `script.js` 的 `CONTACT_CONFIG` 中调整：
+推荐配置步骤：
 
-- `mode: "local"`：仅生成本地记录，适合快速演示和无后端环境。
-- `mode: "email"`：填写 `email` 后，通过系统邮件客户端生成客户信息邮件。
-- `mode: "wechatWebhook"`：填写 `wechatWebhookUrl` 后，将客户信息发送到企业微信机器人 webhook，同时仍保留本地记录作为备份。
+1. 登录或注册 [Formspree](https://formspree.io/)。
+2. 创建一个新表单，并绑定用于接收客户线索的邮箱。
+3. 复制 Formspree 提供的表单地址，例如 `https://formspree.io/f/xxxxabcd`。
+4. 将下面两个位置的 `https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID` 替换为真实地址：
+   - `index.html` 中 `<form>` 的 `action`。
+   - `script.js` 中 `FORM_SERVICE_CONFIG.endpoint`。
+
+客户提交后会发送以下线索字段：
+
+- 姓名：`name`
+- 电话：`phone`
+- 行业：`industry`
+- 需求：`need`
+- 提交时间：`submittedAt`
+
+提交成功后，页面会提示：“提交成功，顾问将尽快联系您。”。
+
+## 本地备份
+
+为了避免网络或静态表单服务临时异常导致线索丢失，页面仍会把每次提交备份到浏览器 `localStorage` 的 `aiLeadCustomers` 字段中。未配置 Formspree 地址时，表单会先以本地备份方式运行，便于演示和测试。
