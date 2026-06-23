@@ -157,7 +157,20 @@ body {
 }
 
 .solution-item {
+  position: relative;
   border-left: 6px solid #f7c948;
+}
+
+.solution-item span {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #fff;
+  background: #0d3b66;
+  font-weight: 800;
 }
 
 .pricing-grid {
@@ -194,6 +207,41 @@ body {
   color: #5c687d;
 }
 
+.price-card em {
+  position: absolute;
+  top: 18px;
+  right: -34px;
+  width: 130px;
+  padding: 6px 0;
+  color: #081838;
+  background: #f7c948;
+  font-style: normal;
+  font-weight: 800;
+  text-align: center;
+  transform: rotate(35deg);
+}
+
+.price-card ul {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.price-card li {
+  position: relative;
+  margin: 10px 0;
+  padding-left: 24px;
+  color: #25314a;
+}
+
+.price-card li::before {
+  position: absolute;
+  left: 0;
+  content: "✓";
+  color: #d69e2e;
+  font-weight: 900;
+}
+
 .price-card a {
   margin-top: 22px;
   padding: 12px 22px;
@@ -201,6 +249,16 @@ body {
 
 .case-grid {
   grid-template-columns: repeat(3, 1fr);
+}
+
+.case-card span {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #0d3b66;
+  background: #eef6ff;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .wechat {
@@ -219,8 +277,37 @@ body {
   font-size: clamp(26px, 4vw, 40px);
 }
 
+.wechat p:not(.section-tag) {
+  max-width: 680px;
+  margin: 16px 0 0;
+  color: #dce8f8;
+}
+
 .wechat .section-tag {
   color: #f7c948;
+}
+
+.wechat-card {
+  min-width: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.wechat-card strong,
+.wechat-card span {
+  display: block;
+}
+
+.wechat-card strong {
+  font-size: 22px;
+}
+
+.wechat-card span {
+  margin: 8px 0 18px;
+  color: #dce8f8;
 }
 
 .card,
