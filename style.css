@@ -32,7 +32,8 @@ body {
 
 .nav-cta,
 .primary-button,
-.lead-form button {
+.lead-form button,
+.price-card a {
   display: inline-block;
   border: 0;
   border-radius: 999px;
@@ -75,14 +76,16 @@ body {
 }
 
 .primary-button,
-.lead-form button {
+.lead-form button,
+.price-card a {
   padding: 15px 34px;
   font-size: 17px;
 }
 
 .nav-cta:hover,
 .primary-button:hover,
-.lead-form button:hover {
+.lead-form button:hover,
+.price-card a:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(247, 201, 72, 0.28);
 }
@@ -115,8 +118,117 @@ body {
   grid-template-columns: repeat(4, 1fr);
 }
 
+.pain-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.pain-card,
+.solution-item,
+.price-card,
+.case-card {
+  padding: 26px;
+}
+
+.pain-card span {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #0d3b66;
+  background: #f7c948;
+  font-weight: 800;
+}
+
+.pain-card h3,
+.solution-item strong,
+.case-card h3 {
+  display: block;
+  margin: 18px 0 10px;
+  color: #0d3b66;
+  font-size: 20px;
+}
+
+.solution-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.solution-item {
+  border-left: 6px solid #f7c948;
+}
+
+.pricing-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.price-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.price-card.featured {
+  border-color: #f7c948;
+  transform: translateY(-10px);
+}
+
+.price-card p {
+  margin: 0 0 10px;
+  color: #0d3b66;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.price-card strong {
+  display: block;
+  margin-bottom: 14px;
+  color: #d69e2e;
+  font-size: 38px;
+}
+
+.price-card span {
+  display: block;
+  min-height: 54px;
+  color: #5c687d;
+}
+
+.price-card a {
+  margin-top: 22px;
+  padding: 12px 22px;
+}
+
+.case-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wechat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border-radius: 28px;
+  padding: 46px;
+  color: #fff;
+  background: linear-gradient(135deg, #0d3b66, #081838);
+}
+
+.wechat h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 40px);
+}
+
+.wechat .section-tag {
+  color: #f7c948;
+}
+
 .card,
 .step,
+.pain-card,
+.solution-item,
+.price-card,
+.case-card,
 .consult {
   border: 1px solid #e4e9f2;
   border-radius: 24px;
@@ -135,6 +247,9 @@ body {
 
 .card p,
 .step p,
+.pain-card p,
+.solution-item p,
+.case-card p,
 .consult-copy p {
   color: #5c687d;
 }
@@ -220,6 +335,10 @@ body {
 @media (max-width: 900px) {
   .cards,
   .steps,
+  .pain-grid,
+  .solution-list,
+  .pricing-grid,
+  .case-grid,
   .consult {
     grid-template-columns: 1fr;
   }
@@ -230,5 +349,14 @@ body {
 
   .nav {
     margin-bottom: 80px;
+  }
+
+  .price-card.featured {
+    transform: none;
+  }
+
+  .wechat {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
