@@ -447,3 +447,13 @@ body {
     flex-direction: column;
   }
 }
+
+.form-message {
+  margin: 0;
+  border: 1px solid rgba(13, 59, 102, 0.12);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: #0d3b66;
+  background: #eef6ff;
+  font-weight: 700;
+}
